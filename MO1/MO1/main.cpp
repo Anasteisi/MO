@@ -45,7 +45,7 @@ int main() //17,57 f(x)=x^2+3x(ln(x)-1); [0,5; 1], eps=0,05, del = 0,01
 	int k = 0;//kolichestvo vychislenii
 	a = 0.5; b = 1; eps = 0.05; del = 0.01;
 
-	double xmin1 = 0, xmin2 = 0, xmin3 = 0, xmin4 = 0, xmin5 = 0, xmin6 = 0;
+	double xmin1 = 0, xmin2 = 0, xmin3 = 0, xmin4 = 0, xmin5 = 0, xmin6 = 0, xmin7 = 0;
 
 	//1 -- method passivnogo poiska
 	double a1 = 0;
@@ -191,7 +191,7 @@ int main() //17,57 f(x)=x^2+3x(ln(x)-1); [0,5; 1], eps=0,05, del = 0,01
 	//6 -- method Njutona-Rafsona
 	k = 0;
 	a1 = 0, b1 = 0, c1 = 0, d1 = 0;
-	a1 = a; b1 = b;//kraya otrezka
+	a1 = a;
 	c1 = a1;
 	k++;//fdx(c1)
 
@@ -204,6 +204,25 @@ int main() //17,57 f(x)=x^2+3x(ln(x)-1); [0,5; 1], eps=0,05, del = 0,01
 	xmin6 = c1;
 
 	cout << "Method Njutona-Rafsona: " << "x=" << xmin6 << ", f(x)=" << f(xmin6) << endl;
+	cout << "Kolichestvo vychisleniy: " << k << endl << endl;
+
+	//7 -- method sekuschih (hord)
+	k = 0;
+	a1 = 0, b1 = 0, c1 = 0, d1 = 0;
+
+	a1 = a + eps, b1 = b - eps;
+
+	while (abs(b1 - a1) >= eps)
+	{
+		c1 = b1 - (fdx(b1)*(a1 - b1)) / (fdx(a1) - fdx(b1));
+		b1 = c1;
+		a1 = b1;
+		k += 2;//fdx(a1) fdx(b1)
+	}
+	
+	xmin7 = c1;
+
+	cout << "Method sekuschih (hord): " << "x=" << xmin7 << ", f(x)=" << f(xmin7) << endl;
 	cout << "Kolichestvo vychisleniy: " << k << endl << endl;
 
 	system("pause");
