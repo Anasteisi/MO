@@ -35,10 +35,10 @@ double x3d(double x1, double x2, double x3)
 int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
 {
 	cout << "f(x) = 7*x1^2+4*x2^2+6*x3^2-3*x1*x2+x1*x3-x2*x3+x1-x2+x3" << endl;
-	cout << "eps = 0.01, del = 0.5, alpha = 0.5" << endl << endl;
+	cout << "eps = 0.001, del = 0.05, alpha = 0.05" << endl << endl;
 
-	double x10 = 1, x20 = 1, x30 = 1;//x0
-	double eps0 = 0.01, del0 = 0.5, alpha0 = 0.5;
+	double x10 = 2, x20 = 2, x30 = 2;//x0
+	double eps0 = 0.001, del0 = 0.05, alpha0 = 0.05;
 
 	int k = 0;//kolichestvo vychislenii
 	bool stop = false;//kriterii ostanovki
@@ -52,33 +52,33 @@ int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
 
 	while (stop == false)
 	{
-		if (f(x1 + alpha, x2, x3) < f(x1, x2, x3))
+		if (f((x1 + alpha), x2, x3) < f(x1, x2, x3))
 			x11 = x1 + alpha;
-		if (f(x1 - alpha, x2, x3) < f(x1, x2, x3))
+		if (f((x1 - alpha), x2, x3) < f(x1, x2, x3))
 			x11 = x1 - alpha;
-		if ((f(x1 - alpha, x2, x3) >= f(x1, x2, x3)) && (f(x1 + alpha, x2, x3) >= f(x1, x2, x3)))
+		if ((f((x1 - alpha), x2, x3) >= f(x1, x2, x3)) && (f((x1 + alpha), x2, x3) >= f(x1, x2, x3)))
 			x11 = x1;
 
-		if (f(x11, x2 + alpha, x3) < f(x11, x2, x3))
+		if (f(x11, (x2 + alpha), x3) < f(x11, x2, x3))
 			x21 = x2 + alpha;
-		if (f(x11, x2 - alpha, x3) < f(x11, x2, x3))
+		if (f(x11, (x2 - alpha), x3) < f(x11, x2, x3))
 			x21 = x2 - alpha;
-		if ((f(x11, x2 - alpha, x3) >= f(x11, x2, x3)) && (f(x11, x2 + alpha, x3) >= f(x11, x2, x3)))
+		if ((f(x11, (x2 - alpha), x3) >= f(x11, x2, x3)) && (f(x11, (x2 + alpha), x3) >= f(x11, x2, x3)))
 			x21 = x2;
 
-		if (f(x11, x21, x3 + alpha) < f(x11, x21, x3))
+		if (f(x11, x21, (x3 + alpha)) < f(x11, x21, x3))
 			x31 = x3 + alpha;
-		if (f(x11, x21, x3 - alpha) < f(x11, x21, x3))
+		if (f(x11, x21, (x3 - alpha)) < f(x11, x21, x3))
 			x31 = x3 - alpha;
-		if ((f(x11, x21, x3 - alpha) >= f(x11, x21, x3)) && (f(x11, x21, x3 + alpha) >= f(x11, x21, x3)))
+		if ((f(x11, x21, (x3 - alpha)) >= f(x11, x21, x3)) && (f(x11, x21, (x3 + alpha)) >= f(x11, x21, x3)))
 			x31 = x3;
 
-		if (x1 == x11 || x2 == x21 || x3 == x31)
+		if (x1 == x11 && x2 == x21 && x3 == x31)
 			alpha = alpha / 2;//droblenie shaga
 
 		k += 7;
 
-		if ((sqrt((x11 - x1)*(x11 - x1) + (x21 - x2)*(x21 - x2) + (x31 - x3)*(x31 - x3))) < eps0)
+		if (((sqrt((x11 - x1)*(x11 - x1) + (x21 - x2)*(x21 - x2) + (x31 - x3)*(x31 - x3))) <= eps0) || (abs(f(x11, x21, x31)-f(x1, x2, x3)) <= eps0))
 			stop = true;
 
 		x1 = x11, x2 = x21, x3 = x31;
