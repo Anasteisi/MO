@@ -42,7 +42,7 @@ double ksialpha(double x1, double x2, double x3, double alpha)
 double feealpha(double x1, double x2, double x3, double y1, double y2, double y3, double alpha)
 {
 	double y = 0;
-	y = 7 * (x1 + alpha*(y1-x1))*(x1 + alpha*(y1 - x1)) + 4 * (x2 + alpha*(y2 - x2))*(x2 + alpha*(y2 - x2)) + 6 * (x3 + alpha*(y3 - x3))*(x3 + alpha*(y3 - x3)) - 3 * (x1 + alpha*(y1 - x1))*(x2 + alpha*(y2 - x2)) + (x1 + alpha*(y1 - x1))*(x3 + alpha*(y3 - x3)) - (x2 + alpha*(y2 - x2))*(x3 + alpha*(y3 - x3)) + (x1 + alpha*(y1 - x1)) - (x2 + alpha*(y2 - x2)) + (x3 + alpha*(y3 - x3));
+	y = 7 * (x1 + alpha*(y1 - x1))*(x1 + alpha*(y1 - x1)) + 4 * (x2 + alpha*(y2 - x2))*(x2 + alpha*(y2 - x2)) + 6 * (x3 + alpha*(y3 - x3))*(x3 + alpha*(y3 - x3)) - 3 * (x1 + alpha*(y1 - x1))*(x2 + alpha*(y2 - x2)) + (x1 + alpha*(y1 - x1))*(x3 + alpha*(y3 - x3)) - (x2 + alpha*(y2 - x2))*(x3 + alpha*(y3 - x3)) + (x1 + alpha*(y1 - x1)) - (x2 + alpha*(y2 - x2)) + (x3 + alpha*(y3 - x3));
 	return y;
 }
 
@@ -51,7 +51,7 @@ double ksialphamin(double x1, double x2, double x3)
 	double a = 0;
 	double alpha = a;
 
-	while (a <= 1)
+	while (a < 1)
 	{
 		if (ksialpha(x1, x2, x3, a) < ksialpha(x1, x2, x3, alpha))
 			alpha = a;
@@ -65,7 +65,7 @@ double feealphamin(double x1, double x2, double x3, double y1, double y2, double
 	double a = 0;
 	double alpha = a;
 
-	while (a <= 1)
+	while (a < 1)
 	{
 		if (feealpha(x1, x2, x3, y1, y2, y3, a) < feealpha(x1, x2, x3, y1, y2, y3, alpha))
 			alpha = a;
@@ -85,10 +85,10 @@ int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
 {
 
 	cout << "f(x) = 7*x1^2+4*x2^2+6*x3^2-3*x1*x2+x1*x3-x2*x3+x1-x2+x3" << endl;
-	cout << "eps = 0.001" << endl << endl;
+	cout << "eps = 0.05" << endl << endl;
 
 	double x10 = 1, x20 = 1, x30 = 1;//x0
-	double eps0 = 0.001, alpha0 = 0.05;
+	double eps0 = 0.05, alpha0 = 0.05;
 
 	int k = 0;//kolichestvo vychislenii
 	bool stop = false;//kriterii ostanovki
@@ -142,7 +142,7 @@ int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
 		x12 = x1 - alpha * x1d(x1, x2, x3);
 		x22 = x2 - alpha * x2d(x1, x2, x3);
 		x32 = x3 - alpha * x3d(x1, x2, x3);
-		
+
 		if (norma(x1d(x12, x22, x32), x2d(x12, x22, x32), x3d(x12, x22, x32)) < eps)//kriterii ostanovki
 			stop = true;
 
@@ -173,9 +173,9 @@ int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
 	{
 		k++;
 
-		x13 = x1 - x1d(x1, x2, x3)/k;
-		x23 = x2 - x2d(x1, x2, x3)/k;
-		x33 = x3 - x3d(x1, x2, x3)/k;
+		x13 = x1 - x1d(x1, x2, x3) / k;
+		x23 = x2 - x2d(x1, x2, x3) / k;
+		x33 = x3 - x3d(x1, x2, x3) / k;
 
 		if (norma(x1d(x13, x23, x33), x2d(x13, x23, x33), x3d(x13, x23, x33)) < eps)//kriterii ostanovki
 			stop = true;
@@ -204,7 +204,7 @@ int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
 
 	k = 0;//kolichestvo vychislenii
 	stop = false;//kriterii ostanovki
-	
+
 	while (stop == false)
 	{
 		for (int i = 0; i < 3; i++)
