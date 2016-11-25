@@ -1,0 +1,364 @@
+#include <iostream>
+#include <cmath>
+#include <ctime>
+
+using namespace std;
+
+double f(double x1, double x2, double x3)
+{
+	double y = 0;
+	y = 7 * x1*x1 + 4 * x2*x2 + 6 * x3*x3 - 3 * x1*x2 + x1*x3 - x2*x3 + x1 - x2 + x3;
+	return y;
+}
+
+double x1d(double x1, double x2, double x3)
+{
+	double y = 0;
+	y = 14 * x1 - 3 * x2 + x3 + 1;
+	return y;
+}
+
+double x2d(double x1, double x2, double x3)
+{
+	double y = 0;
+	y = 8 * x2 - 3 * x1 - x3 - 1;
+	return y;
+}
+
+double x3d(double x1, double x2, double x3)
+{
+	double y = 0;
+	y = 12 * x3 + x1 - x2 + 1;
+	return y;
+}
+
+double ksialpha(double x1, double x2, double x3, double alpha)
+{
+	double y = 0;
+	y = 7 * (x1 - alpha*x1d(x1, x2, x3))*(x1 - alpha*x1d(x1, x2, x3)) + 4 * (x2 - alpha*x2d(x1, x2, x3))*(x2 - alpha*x2d(x1, x2, x3)) + 6 * (x3 - alpha*x3d(x1, x2, x3))*(x3 - alpha*x3d(x1, x2, x3)) - 3 * (x1 - alpha*x1d(x1, x2, x3))*(x2 - alpha*x2d(x1, x2, x3)) + (x1 - alpha*x1d(x1, x2, x3))*(x3 - alpha*x3d(x1, x2, x3)) - (x2 - alpha*x2d(x1, x2, x3))*(x3 - alpha*x3d(x1, x2, x3)) + (x1 - alpha*x1d(x1, x2, x3)) - (x2 - alpha*x2d(x1, x2, x3)) + (x3 - alpha*x3d(x1, x2, x3));
+	return y;
+}
+
+double feealpha(double x1, double x2, double x3, double y1, double y2, double y3, double alpha)
+{
+	double y = 0;
+	y = 7 * (x1 + alpha*(y1 - x1))*(x1 + alpha*(y1 - x1)) + 4 * (x2 + alpha*(y2 - x2))*(x2 + alpha*(y2 - x2)) + 6 * (x3 + alpha*(y3 - x3))*(x3 + alpha*(y3 - x3)) - 3 * (x1 + alpha*(y1 - x1))*(x2 + alpha*(y2 - x2)) + (x1 + alpha*(y1 - x1))*(x3 + alpha*(y3 - x3)) - (x2 + alpha*(y2 - x2))*(x3 + alpha*(y3 - x3)) + (x1 + alpha*(y1 - x1)) - (x2 + alpha*(y2 - x2)) + (x3 + alpha*(y3 - x3));
+	return y;
+}
+
+double psialpha(double x1, double x2, double x3, double d1, double d2, double d3, double alpha)
+{
+	double y = 0;
+	y = 7 * (x1 + alpha*d1)*(x1 + alpha*d1) + 4 * (x2 + alpha*d2)*(x2 + alpha*d2) + 6 * (x3 + alpha*d3)*(x3 + alpha*d3) - 3 * (x1 + alpha*d1)*(x2 + alpha*d2) + (x1 + alpha*d1)*(x3 + alpha*d3) - (x2 + alpha*d2)*(x3 + alpha*d3) + (x1 + alpha*d1) - (x2 + alpha*d2) + (x3 + alpha*d3);
+	return y;
+}
+
+double njutalpha(double x1, double x2, double x3, double y1, double y2, double y3, double alpha)
+{
+	double y = 0;
+	y = 7 * (x1 - alpha*y1)*(x1 - alpha*y1) + 4 * (x2 - alpha*y2)*(x2 - alpha*y2) + 6 * (x3 - alpha*y3)*(x3 - alpha*y3) - 3 * (x1 - alpha*y1)*(x2 - alpha*y2) + (x1 - alpha*y1)*(x3 - alpha*y3) - (x2 - alpha*y2)*(x3 - alpha*y3) + (x1 - alpha*y1) - (x2 - alpha*y2) + (x3 - alpha*y3);
+	return y;
+}
+
+double ksialphamin(double x1, double x2, double x3)
+{
+	double a = -1;
+	double alpha = a;
+
+	while (a < 1)
+	{
+		if (ksialpha(x1, x2, x3, a) < ksialpha(x1, x2, x3, alpha))
+			alpha = a;
+		a += 0.01;
+	}
+	return alpha;
+}
+
+double feealphamin(double x1, double x2, double x3, double y1, double y2, double y3)
+{
+	double a = -1;
+	double alpha = a;
+
+	while (a < 1)
+	{
+		if (feealpha(x1, x2, x3, y1, y2, y3, a) < feealpha(x1, x2, x3, y1, y2, y3, alpha))
+			alpha = a;
+		a += 0.01;
+	}
+	return alpha;
+}
+
+double psialphamin(double x1, double x2, double x3, double d1, double d2, double d3)
+{
+	double a = -1;
+	double alpha = a;
+
+	while (a < 1)
+	{
+		if (psialpha(x1, x2, x3, d1, d2, d3, a) < psialpha(x1, x2, x3, d1, d2, d3, alpha))
+			alpha = a;
+		a += 0.01;
+	}
+	return alpha;
+}
+
+double njutalphamin(double x1, double x2, double x3, double y1, double y2, double y3)
+{
+	double a = -1;
+	double alpha = a;
+
+	while (a < 1)
+	{
+		if (njutalpha(x1, x2, x3, y1, y2, y3, a) < njutalpha(x1, x2, x3, y1, y2, y3, alpha))
+			alpha = a;
+		a += 0.01;
+	}
+	return alpha;
+}
+
+double norma(double x1, double x2, double x3)
+{
+	double y = 0;
+	y = sqrt(x1*x1 + x2*x2 + x3*x3);
+	return y;
+}
+
+int main() //17,141 f(x)=7*x1*x1+4*x2*x2+6*x3*x3-3*x1*x2+x1*x3-x2*x3+x1-x2+x3
+{
+
+	cout << "f(x) = 7*x1^2+4*x2^2+6*x3^2-3*x1*x2+x1*x3-x2*x3+x1-x2+x3" << endl;
+	cout << "eps = 0.05" << endl << endl;
+
+	double x10 = 1, x20 = 1, x30 = 1;//x0
+	double eps0 = 0.05, alpha0 = 0.05;
+
+	int k = 0;//kolichestvo vychislenii
+	bool stop = false;//kriterii ostanovki
+					  
+	//1 -- Ovrazhnyi method
+	unsigned int start_time = clock();
+
+	double x1 = x10, x2 = x20, x3 = x30;
+	double y1 = 0, y2 = 0, y3 = 0, yt1 = 0, yt2 = 0, yt3 = 0;
+	double eps = eps0, alpha = alpha0;
+	
+	while (stop == false)
+	{
+		k++;
+
+		alpha = ksialphamin(x1, x2, x3);//MNGS
+		y1 = x1 - alpha*x1d(x1, x2, x3);
+		y2 = x2 - alpha*x2d(x1, x2, x3);
+		y3 = x3 - alpha*x3d(x1, x2, x3);
+
+		alpha = ksialphamin(x1 + 2*eps0, x2 + 2 * eps0, x3 + 2 * eps0);//MNGS
+		yt1 = x1 + 2 * eps0 - alpha*x1d(x1 + 2 * eps0, x2 + 2 * eps0, x3 + 2 * eps0);
+		yt2 = x2 + 2 * eps0 - alpha*x2d(x1 + 2 * eps0, x2 + 2 * eps0, x3 + 2 * eps0);
+		yt3 = x3 + 2 * eps0 - alpha*x3d(x1 + 2 * eps0, x2 + 2 * eps0, x3 + 2 * eps0);
+
+		alpha = feealphamin(y1, y2, y3, yt1, yt2, yt3);
+		x1 = y1 + alpha*(yt1 - y1);
+		x2 = y2 + alpha*(yt2 - y2);
+		x3 = y3 + alpha*(yt3 - y3);
+
+		if (norma(x1d(x1, x2, x3), x2d(x1, x2, x3), x3d(x1, x2, x3)) < eps)
+			stop = true;
+	}
+
+	unsigned int end_time = clock();
+	unsigned int search_time = end_time - start_time;
+
+	cout << "Ovrazhnyi method:" << endl;
+	cout << "xmin = (" << x1 << ", " << x2 << ", " << x3 << "), f(xmin) = " << f(x1, x2, x3) << endl;
+	cout << "Kolichestvo vychisleniy: " << k << endl;
+	cout << "Vremya vypolneniya: " << search_time << endl << endl;
+
+	//1 -- Ovrazhnyi method
+
+	//2 -- Method sopryazhennyh gradientov Fletchera-Rivza
+	start_time = clock();
+
+	x1 = x10, x2 = x20, x3 = x30;
+	eps = eps0, alpha = alpha0;
+	k = 0;
+	stop = false;
+
+	double x12 = x1, x22 = x2, x32 = x3;
+	double d1 = 0, d2 = 0, d3 = 0;
+
+	d1 = -1 * x1d(x1, x2, x3);
+	d2 = -1 * x2d(x1, x2, x3);
+	d3 = -1 * x3d(x1, x2, x3);
+
+	while (stop == false)
+	{	
+		k++;
+
+		alpha = psialphamin(x1, x2, x3, d1, d2, d3);
+		x12 = x1 + alpha*d1;
+		x22 = x2 + alpha*d2;
+		x32 = x3 + alpha*d3;
+
+		if (norma(x1d(x12, x22, x32), x2d(x12, x22, x32), x3d(x12, x22, x32)) < eps)
+			stop = true;
+
+		if (k % 3 == 0)
+		{
+			d1 = -1 * x1d(x12, x22, x32);
+			d2 = -1 * x2d(x12, x22, x32);
+			d3 = -1 * x3d(x12, x22, x32);
+		}
+		else
+		{
+			double beta = 0;
+			beta = pow(norma(x1d(x12, x22, x32), x2d(x12, x22, x32), x3d(x12, x22, x32)),2)/pow(norma(x1d(x1, x2, x3), x2d(x1, x2, x3), x3d(x1, x2, x3)),2);
+			d1 = -1 * x1d(x12, x22, x32) + beta*d1;
+			d2 = -1 * x2d(x12, x22, x32) + beta*d2;
+			d3 = -1 * x3d(x12, x22, x32) + beta*d3;
+		}
+
+		x1 = x12, x2 = x22, x3 = x32;
+	}
+
+	end_time = clock();
+	search_time = end_time - start_time;
+
+	cout << "Method sopryazhennyh gradientov Fletchera-Rivza:" << endl;
+	cout << "xmin = (" << x12 << ", " << x22 << ", " << x32 << "), f(xmin) = " << f(x12, x22, x32) << endl;
+	cout << "Kolichestvo vychisleniy: " << k << endl;
+	cout << "Vremya vypolneniya: " << search_time << endl << endl;
+
+	//2 -- Method sopryazhennyh gradientov Fletchera-Rivza
+
+	//3 -- Method Njutona
+	start_time = clock();
+
+	x1 = x10, x2 = x20, x3 = x30;
+	eps = eps0, alpha = alpha0;
+	k = 0;
+	stop = false;
+
+	double x13 = x1, x23 = x2, x33 = x3;
+
+	//f(x) = 7 * x1*x1 + 4 * x2*x2 + 6 * x3*x3 - 3 * x1*x2 + x1*x3 - x2*x3 + x1 - x2 + x3
+	//x1d = 14 * x1 - 3 * x2 + x3 + 1;
+	//x2d = 8 * x2 - 3 * x1 - x3 - 1;
+	//x3d  = 12 * x3 + x1 - x2 + 1;
+
+	double a11 = 0, a12 = 0, a13 = 0, a21 = 0, a22 = 0 , a23 = 0, a31 = 0, a32 = 0, a33 = 0;//matrica f''
+	a11 = 14, a21 = -3, a31 = 1;
+	a12 = -3, a22 = 8, a32 = -1;
+	a13 = 1, a23 = -1, a33 = 12;
+
+	double b11 = 0, b12 = 0, b13 = 0, b21 = 0, b22 = 0, b23 = 0, b31 = 0, b32 = 0, b33 = 0;//matrica f''^(-1)
+	b11 = 0.07786885, b12 = 0.02868852, b12 = -0.00409836;
+	b21 = 0.02868852, b22 = 0.13688525, b23 = 0.00901639;
+	b31 = -0.00409836, b32 = 0.00901639, b33 = 0.08442623;
+
+	double z1 = 0, z2 = 0, z3 = 0;
+	
+	while (stop == false)
+	{
+		k++;
+
+		z1 = b11*x1d(x1, x2, x3) + b12*x2d(x1, x2, x3) + b13*x3d(x1, x2, x3);
+		z2 = b21*x1d(x1, x2, x3) + b22*x2d(x1, x2, x3) + b23*x3d(x1, x2, x3);
+		z3 = b31*x1d(x1, x2, x3) + b32*x2d(x1, x2, x3) + b33*x3d(x1, x2, x3);
+		
+		alpha = njutalphamin(x1, x2, x3, z1, z2, z3);
+
+		x13 = x1 - alpha*z1;
+		x23 = x2 - alpha*z2;
+		x33 = x3 - alpha*z3;
+
+		if (norma(x1d(x13, x23, x33), x2d(x13, x23, x33), x3d(x13, x23, x33)) < eps)
+			stop = true;
+
+		x1 = x13, x2 = x23, x3 = x33;
+	}
+
+	end_time = clock();
+	search_time = end_time - start_time;
+
+	cout << "Method Njutona:" << endl;
+	cout << "xmin = (" << x13 << ", " << x23 << ", " << x33 << "), f(xmin) = " << f(x13, x23, x33) << endl;
+	cout << "Kolichestvo vychisleniy: " << k << endl;
+	cout << "Vremya vypolneniya: " << search_time << endl << endl;
+
+	//3 -- Method Njutona
+
+	//4 -- Kvazinjutonovskii method
+	start_time = clock();
+
+	x1 = x10, x2 = x20, x3 = x30;
+	eps = eps0, alpha = alpha0;
+	k = 0;
+	stop = false;
+
+	double x14 = x1, x24 = x2, x34 = x3;
+	double h11 = 1, h12 = 0, h13 = 0, h21 = 0, h22 = 1, h23 = 0, h31 = 0, h32 = 0, h33 = 1;//matrica H0
+	double w1 = 0, w2 = 0, w3 = 0;
+	double delta1 = 0, delta2 = 0, delta3 = 0;
+	double gamma1 = 0, gamma2 = 0, gamma3 = 0;
+
+	while (stop == false)
+	{
+		k++;
+
+		w1 = h11*x1d(x1, x2, x3) + h12*x2d(x1, x2, x3) + h13*x3d(x1, x2, x3);
+		w2 = h21*x1d(x1, x2, x3) + h22*x2d(x1, x2, x3) + h23*x3d(x1, x2, x3);
+		w3 = h31*x1d(x1, x2, x3) + h32*x2d(x1, x2, x3) + h33*x3d(x1, x2, x3);
+
+		alpha = njutalphamin(x1, x2, x3, w1, w2, w3);
+		x14 = x1 - alpha*x1d(x1, x2, x3);
+		x24 = x2 - alpha*x2d(x1, x2, x3);
+		x34 = x3 - alpha*x3d(x1, x2, x3);
+
+		if (norma(x1d(x14, x24, x34), x2d(x14, x24, x34), x3d(x14, x24, x34)) < eps)
+			stop = true;
+
+		if (k % 4 == 0)
+			h11 = 1, h12 = 0, h13 = 0, h21 = 0, h22 = 1, h23 = 0, h31 = 0, h32 = 0, h33 = 1;//matrica H0
+		else
+		{
+			delta1 = x14 - x1;
+			delta2 = x24 - x2;
+			delta3 = x34 - x3;
+
+			gamma1 = x1d(x14, x24, x34) - x1d(x1, x2, x3);
+			gamma2 = x2d(x14, x24, x34) - x2d(x1, x2, x3);
+			gamma3 = x3d(x14, x24, x34) - x3d(x1, x2, x3);
+
+			double t1 = 0, t2 = 0, t3 = 0;
+			t1 = delta1 - (h11*gamma1 + h12*gamma2 + h13*gamma3);
+			t2 = delta2 - (h21*gamma1 + h22*gamma2 + h23*gamma3);
+			t3 = delta3 - (h31*gamma1 + h32*gamma2 + h33*gamma3);
+
+			double zn = t1*gamma1 + t2*gamma2 + t3*gamma3;//znamenatel'
+			zn = ceil(100000000 * (1 / zn) / 100000000);//perevorot + okruglenie
+
+			double r11 = 0, r12 = 0, r13 = 0, r21 = 0, r22 = 0, r23 = 0, r31 = 0, r32 = 0, r33 = 0;
+			r11 = t1*t1*zn, r12 = t1*t2*zn, r13 = t1*t3*zn;
+			r21 = t2*t1*zn, r22 = t2*t2*zn, r23 = t2*t3*zn;
+			r31 = t3*t1*zn, r32 = t3*t2*zn, r33 = t3*t3*zn;
+
+			h11 = h11 + r11, h12 = h12 + r12, h13 = h13 + r13;//new H0
+			h21 = h21 + r21, h22 = h22 + r22, h23 = h23 + r23;
+			h31 = h31 + r31, h32 = h32 + r32, h33 = h33 + r33;
+		}
+		x1 = x14, x2 = x24, x3 = x34;
+	}
+
+	end_time = clock();
+	search_time = end_time - start_time;
+
+	cout << "Kvazinjutonovskii method:" << endl;
+	cout << "xmin = (" << x14 << ", " << x24 << ", " << x34 << "), f(xmin) = " << f(x14, x24, x34) << endl;
+	cout << "Kolichestvo vychisleniy: " << k << endl;
+	cout << "Vremya vypolneniya: " << search_time << endl << endl;
+
+	//4 -- Kvazinjutonovskii method
+
+	system("pause");
+	return 0;
+}
