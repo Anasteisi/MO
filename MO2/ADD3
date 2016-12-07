@@ -1,0 +1,235 @@
+#include <iostream>
+#include <cmath>
+#include <ctime>
+
+using namespace std;
+
+double f(double x1, double x2)
+{
+	double y = 0;
+	y = x1*x1 + x2*x2 - 6*x1 - 3*x2 + 5;
+	return y;
+}
+
+double fdx1(double x1, double x2)
+{
+	double y = 0;
+	y = 2*x1 - 6;
+	return y;
+}
+
+double fdx2(double x1, double x2)
+{
+	double y = 0;
+	y = 2*x2 - 3;
+	return y;
+}
+
+double g1(double x1, double x2)
+{
+	double y = 0;
+	y = x1 + x2 -3;
+	return y;
+}
+
+double g1dx1(double x1, double x2)
+{
+	double y = 0;
+	y = 1;
+	return y;
+}
+
+double g1dx2(double x1, double x2)
+{
+	double y = 0;
+	y = 1;
+	return y;
+}
+
+double g2(double x1, double x2)
+{
+	double y = 0;
+	y = 2 * x1 + x2 - 4;
+	return y;
+}
+
+double g2dx1(double x1, double x2)
+{
+	double y = 0;
+	y = 2;
+	return y;
+}
+
+double g2dx2(double x1, double x2)
+{
+	double y = 0;
+	y = 1;
+	return y;
+}
+
+double g3(double x1, double x2)
+{
+	double y = 0;
+	y =- x1;
+	return y;
+}
+
+double g3dx1(double x1, double x2)
+{
+	double y = 0;
+	y = -1;
+	return y;
+}
+
+double g3dx2(double x1, double x2)
+{
+	double y = 0;
+	y = 0;
+	return y;
+}
+
+double g4(double x1, double x2)
+{
+	double y = 0;
+	y = -x2;
+	return y;
+}
+
+double g4dx1(double x1, double x2)
+{
+	double y = 0;
+	y = 0;
+	return y;
+}
+
+double g4dx2(double x1, double x2)
+{
+	double y = 0;
+	y = -1;
+	return y;
+}
+
+double norma(double x1, double x2)
+{
+	double y = 0;
+	y = sqrt(x1*x1 + x2*x2);
+	return y;
+}
+
+double max(double a, double b)
+{
+	if (a > b) return a;
+	else return b;
+}
+
+double h(double x1, double x2)
+{
+	double y = 0;
+	y = pow(max(0, g1(x1, x2)), 2) + pow(max(0, g2(x1, x2)), 2) + pow(max(0, g3(x1, x2)), 2) + pow(max(0, g4(x1, x2)), 2);
+	return y;
+}
+
+double hdx1(double x1, double x2)
+{
+	double y = 0;
+	y = 2 * (g1dx1(x1, x2)*max(0, g1(x1, x2)) + g2dx1(x1, x2)*max(0, g2(x1, x2)) + g3dx1(x1, x2)*max(0, g3(x1, x2)) + g4dx1(x1, x2)*max(0, g4(x1, x2)));
+	return y;
+}
+
+double hdx2(double x1, double x2)
+{
+	double y = 0;
+	y = 2 * (g1dx2(x1, x2)*max(0, g1(x1, x2)) + g2dx2(x1, x2)*max(0, g2(x1, x2)) + g3dx2(x1, x2)*max(0, g3(x1, x2)) + g4dx2(x1, x2)*max(0, g4(x1, x2)));
+	return y;
+}
+
+double fi(double x1, double x2, double r)
+{
+	double y = 0;
+	y = f(x1, x2) + r*h(x1, x2);
+	return y;
+}
+
+double fidx1(double x1, double x2, double r)
+{
+	double y = 0;
+	y = fdx1(x1,x2) + r*hdx1(x1,x2);
+	return y;
+}
+
+double fidx2(double x1, double x2, double r)
+{
+	double y = 0;
+	y = fdx2(x1, x2) + r*hdx2(x1, x2);
+	return y;
+}
+
+double ksialpha(double x1, double x2, double alpha, double r)
+{
+	double y = 0;
+	y = fi((x1 - alpha*fidx1(x1, x2, r)), (x2 - alpha*fidx2(x1, x2, r)), r);
+	return y;
+}
+
+double ksialphamin(double x1, double x2, double r)
+{
+	double a = -1;
+	double alpha = a;
+
+	while (a < 1)
+	{
+		if (ksialpha(x1, x2, a, r) < ksialpha(x1, x2, alpha, r))
+			alpha = a;
+		a += 0.0001;
+	}
+	return alpha;
+}
+
+int main()
+{
+
+	cout << "f(x) = x1^2 + x2^2 - 6*x1 - 3*x2 + 5" << endl;
+
+	double x10 = 1, x20 = 1;//x0
+	double eps0 = 0.01, alpha0 = 0.05, r0 = 1;
+
+	int k1 = 0, k2 = 0;//kolichestvo vychislenii
+	bool stop1 = false, stop2 = false;//kriterii ostanovki
+
+	double x1 = x10, x2 = x20;
+	double x11 = x1, x21 = x2;
+	double x12 = x1, x22 = x2;
+	double eps1 = eps0, r = r0;
+	double eps2 = eps0*0.1, alpha2 = alpha0;
+
+	unsigned int start_time = clock();
+	while (stop1 == false)
+	{
+		k1++;
+		stop2 = false;
+		while (stop2 == false)
+		{
+			k2++;
+			alpha2 = ksialphamin(x11, x21, r);
+			x12 = x11 - alpha2*fidx1(x11, x21, r);
+			x22 = x21 - alpha2*fidx2(x11, x21, r);
+			if (norma(fidx1(x12, x22, r), fidx2(x12, x22, r)) < eps2)
+				stop2 = true;
+			x11 = x12, x21 = x22;
+		}
+		x1 = x12, x2 = x22;
+		if (h(x1, x2) <= eps1)
+			stop1 = true;
+		r *= 10;
+	}
+	unsigned int end_time = clock();
+	unsigned int search_time = end_time - start_time;
+
+	cout << "Method vneshnikh shtrafov:" << endl;
+	cout << "xmin = (" << x1 << ", " << x2  << "), f(xmin) = " << f(x11, x21) << endl;
+	cout << "Kolichestvo vychisleniy: " << k1 + k2 << endl;
+	cout << "Vremya vypolneniya: " << search_time << endl << endl;
+
+	system("pause");
+	return 0;
+}
